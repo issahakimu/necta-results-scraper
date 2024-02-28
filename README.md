@@ -21,7 +21,7 @@ use NectaResultScraper\NectaResultScraper;
 $result = NectaResultScraper::results('S1187/0142/2022');
 
 // Output the result.
-echo $result;
+echo json_encode($result);
 ```
 
 ## Output
