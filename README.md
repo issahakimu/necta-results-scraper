@@ -47,8 +47,13 @@ The output is student's result when converted to JSON
 }
 ```
 
-## Error
+## Validation
+The supported examination formats are slash-separated and comma-separated formats, e.g., S1187/0142/2022 or S1187.0142.2022. The package handles validation for you.
 
+## Supported years
+Currently, we support all years between 2015 and 2023, except for 2016.
+
+## Error
 If the student is not found, 404 status code will be returned. For any other error, a code of 500 will be returned.
 
 ## Contributing
