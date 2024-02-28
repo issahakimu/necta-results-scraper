@@ -6,7 +6,7 @@ This package provides a PHP script that allows you to scrape students' results f
 
 You can install this package using Composer:
 
-```composer require alexleotz/necta-results-scraper```
+`composer require alexleotz/necta-results-scraper`
 
 ## Usage
 
@@ -18,7 +18,7 @@ require_once('vendor/autoload.php');
 use NectaResultScraper\NectaResultScraper;
 
 // Call the static result method of the NectaResultScraper class with the index number string as the argument.
-$result = NectaResultScraper::result('S1187/0142/2022');
+$result = NectaResultScraper::results('S1187/0142/2022');
 
 // Output the result.
 echo $result;
@@ -26,31 +26,30 @@ echo $result;
 
 ## Output
 
-The output is student's result in json format
+The output is student's result when converted to JSON
 
 ```{
-"gender": "M",
-"division": "I",
-"points": "15",
-"subjects": {
-"CIV": "'C'",
-"HIST": "'C'",
-"GEO": "'C'",
-"B/KNOWL": "'C'",
-"KISW": "'C'",
-"ENGL": "'B'",
-"PHY": "'C'",
-"CHEM": "'B'",
-"BIO": "'A'",
-"B/MATH": "'A'"
-}
-"source":"https:\/\/matokeo.necta.go.tz\/csee2022\/results\/s1187.htm"
+  "gender": "F",
+  "division": "IV",
+  "points": "31",
+  "subjects": ["CIV", "HIST", "GEO", "KIISLAMU", "KISW", "ENGL", "BIO", "MATH"],
+  "subjects_grades": {
+    "CIV": "F",
+    "HIST": "D",
+    "GEO": "F",
+    "KIISLAMU": "F",
+    "KISW": "C",
+    "ENGL": "F",
+    "BIO": "D",
+    "MATH": "F"
+  },
+  "source": "https://onlinesys.necta.go.tz/results/2022/csee/results/s0596.htm"
 }
 ```
 
 ## Error
 
-If the student is not found, a JSON response with a status code of 404 will be returned. For any other error, a code of 500 will be returned.
+If the student is not found, 404 status code will be returned. For any other error, a code of 500 will be returned.
 
 ## Contributing
 
