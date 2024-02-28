@@ -58,7 +58,7 @@ If the student is not found, 404 status code will be returned. For any other err
 
 ## Contributing
 
-If you’d like to contribute to this project, please fork the repository and use a feature branch. Pull requests are welcome!
+If you’d like to contribute to this project, please fork the repository and use a feature branch. Pull requests are welcome or call 0748333586 for personal support!
 
 ## License
 
