@@ -13,7 +13,9 @@ You can install this package using Composer:
 To use this package, simply call the static result method of the NectaResultScraper class with the student form four index number string as the argument:
 Assuming you have a PHP file named index.php in your parent directory, simply replicate the code provided below:
 
-```<?php
+
+```php
+<?php
 require_once('vendor/autoload.php');
 
 use NectaResultScraper\NectaResultScraper;
@@ -26,7 +28,9 @@ echo json_encode($result);
 ```
 
 Then run:
-```php index.php```
+```sh
+php index.php
+```
 
 ## Output
 
