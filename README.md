@@ -13,7 +13,6 @@ You can install this package using Composer:
 To use this package, simply call the static result method of the NectaResultScraper class with the student form four index number string as the argument:
 Assuming you have a PHP file named index.php in your parent directory, simply replicate the code provided below:
 
-
 ```php
 <?php
 require_once('vendor/autoload.php');
@@ -28,6 +27,7 @@ echo json_encode($result);
 ```
 
 Then run:
+
 ```sh
 php index.php
 ```
@@ -68,15 +68,22 @@ Currently, we support all years between 2015 and 2023, except for 2016.
 If the student is not found, 404 status code will be returned. For any other error, a code of 500 will be returned.
 
 If, for any reason, you encounter the following error:
-``` 
+
+```
 Could not find a version of the package alexleotz/necta-results-scraper matching your minimum-stability (stable). Require it with an explicit version constraint allowing its desired stability.
 ```
 
 Create a new composer file (if none exists) and add the following line:
+
 ```json
 "minimum-stability": "stable"
 ```
+
 Then, install this package again.
+
+## Inspiration
+
+This package was inspired by [NECTA-API](https://github.com/vincent-laizer/NECTA-API) Python package created by [vincent laizer](https://github.com/vincent-laizer)
 
 ## Contributing
 
