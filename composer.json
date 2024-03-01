@@ -1,7 +1,6 @@
 {
   "name": "alexleotz/necta-results-scraper",
   "description": "This package provides a PHP script that allows you to scrape students' results from the National Examinations Council of Tanzania (NECTA) website.",
-  "version": "2.0.0",
   "type": "library",
   "keywords": [
     "necta",
@@ -34,5 +33,5 @@
       "NectaResultScraper\\": "src/"
     }
   },
-  "minimum-stability": "stable"
+  "minimum-stability": "dev"
 }

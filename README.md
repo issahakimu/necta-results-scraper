@@ -11,6 +11,7 @@ You can install this package using Composer:
 ## Usage
 
 To use this package, simply call the static result method of the NectaResultScraper class with the student form four index number string as the argument:
+Assuming you have a PHP file named index.php in your parent directory, simply replicate the code provided below:
 
 ```<?php
 require_once('vendor/autoload.php');
@@ -23,6 +24,9 @@ $result = NectaResultScraper::results('S1187/0142/2022');
 // Output the result.
 echo json_encode($result);
 ```
+
+Then run:
+``php index.php`
 
 ## Output
 
@@ -48,13 +52,27 @@ The output is student's result when converted to JSON
 ```
 
 ## Validation
+
 The supported examination formats are slash-separated and comma-separated formats, e.g., S1187/0142/2022 or S1187.0142.2022. The package handles validation for you.
 
 ## Supported years
+
 Currently, we support all years between 2015 and 2023, except for 2016.
 
 ## Error
+
 If the student is not found, 404 status code will be returned. For any other error, a code of 500 will be returned.
+
+If, for any reason, you encounter the following error:
+``` 
+Could not find a version of the package alexleotz/necta-results-scraper matching your minimum-stability (stable). Require it with an explicit version constraint allowing its desired stability.
+```
+
+Create a new composer file (if none exists) and add the following line:
+```json
+"minimum-stability": "stable"
+```
+Then, install this package again.
 
 ## Contributing
 
