@@ -33,5 +33,6 @@
     "psr-4": {
       "NectaResultScraper\\": "src/"
     }
-  }
+  },
+  "minimum-stability": "dev"
 }
