@@ -26,7 +26,7 @@ echo json_encode($result);
 ```
 
 Then run:
-``php index.php`
+```php index.php```
 
 ## Output
 
