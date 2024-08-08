@@ -2,10 +2,7 @@
 require_once('vendor/autoload.php');
 
 use NectaResultScraper\NectaResultScraper;
-
-// Call the static result method of the NectaResultScraper class with the index number string as the argument.
-$result = NectaResultScraper::results('S0596/0001/2022');
-
+// Pass the index number string and the level as the arguments.
+$result = NectaResultScraper::results('S0310/0501/2023', 'acsee');
 // Output the result.
 echo json_encode($result);
-
