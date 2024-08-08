@@ -19,8 +19,12 @@ require_once('vendor/autoload.php');
 
 use NectaResultScraper\NectaResultScraper;
 
-// Call the static result method of the NectaResultScraper class with the index number string as the argument.
-$result = NectaResultScraper::results('S1187/0142/2022');
+// Pass the index number string and the level as the arguments.
+$result = NectaResultScraper::results('S1187/0142/2022', 'csee');
+// or
+$result = NectaResultScraper::results('S0310/0501/2023', 'acsee');
+// or simply
+$result = NectaResultScraper::results('S1187/0142/2022'); // level is 'csee' by default
 
 // Output the result.
 echo json_encode($result);
@@ -61,7 +65,7 @@ The supported examination formats are slash-separated and comma-separated format
 
 ## Supported years
 
-Currently, we support all years between 2015 and 2023, except for 2016.
+Currently, we support all years from 2003 up to now.
 
 ## Error
 
@@ -87,7 +91,7 @@ This package was inspired by [NECTA-API](https://github.com/vincent-laizer/NECTA
 
 ## Contributing
 
-If you’d like to contribute to this project, please fork the repository and use a feature branch. Pull requests are welcome or call 0748333586 for personal support!
+If you’d like to contribute to this project, please fork the repository and use a feature branch. Pull requests are welcome or call 0748333586 for personal support and chat!
 
 ## License
 
