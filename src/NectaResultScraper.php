@@ -10,15 +10,22 @@ use Throwable;
 
 class NectaResultScraper
 {
-    public static function results($index_number)
+    public static function results($index_number, $level = 'csee')
     {
+        $level = strtolower($level);
+        // Check if the provided level is valid (csee or acsee)
+        if (!in_array($level, ['csee', 'acsee'])) {
+            return json_encode([
+                'error' => 'Invalid level. Only "csee" and "acsee" are supported.',
+            ]);
+        }
         // Create an object of the class
         $result = new NectaResultScraper();
         // Call the scrape method and return the result
-        return $result->scrape($index_number);
+        return $result->scrape($index_number, $level);
     }
 
-    public function scrape($index_number)
+    public function scrape($index_number, $level)
     {
         // Implementation of scrape method
 
@@ -43,7 +50,7 @@ class NectaResultScraper
                 // Student number
                 $student_number = $substrings[1];
 
-                $url = $this->url($year, $school_number);
+                $url = $this->url($year, $school_number, $level);
                 if ($year > 2018) {
                     $index = 2;
                 } else {
@@ -106,28 +113,49 @@ class NectaResultScraper
         }
     }
 
-    private function url($year, $school_number)
+    private function url($year, $school_number, $level)
     {
-        // List of supported years
-        $supported_years = ['2015', '2017', '2018', '2019', '2020', '2021', '2022'];
-        if (in_array($year, $supported_years)) {
-            return "https://onlinesys.necta.go.tz/results/{$year}/csee/results/{$school_number}.htm";
-        }
-        if ($year == 2023) {
-            return  "https://matokeo.necta.go.tz/results/{$year}/csee/CSEE2023/results/{$school_number}.htm";
-        }
-        if ($year == 2016) {
-            return "https://onlinesys.necta.go.tz/results/2016/csee/results/{$school_number}.htm";
+        // Determine the current year based on the level. For acsee, results are released in the same year.
+        $currentYear = ($level == 'acsee') ? date("Y") : date("Y") - 1;
+        // Generate the array of supported years from 2003 to the current year (or year before the current year for non-acsee levels)
+        $supported_years = range(2003, $currentYear);
+        if ($level == 'csee') {
+            // For the years from 2003 up to 2015, results are located at this domain (https://maktaba.tetea.org)
+            if (in_array($year, range(2003, 2015))) {
+                $level = strtoupper($level);
+                return "https://maktaba.tetea.org/exam-results/{$level}{$year}/${school_number}.htm";
+            }
+            // For the years from 2016 up to the current year (or year before the current year for non-acsee levels), results are located at this domain (https://onlinesys.necta.go.tz)
+            if (in_array($year, range(2016, $currentYear - 1))) {
+                return "https://onlinesys.necta.go.tz/results/{$year}/{$level}/results/{$school_number}.htm";
+            }
+            // For the current year (or year before the current year for non-acsee levels), results are initially located at this domain (https://matokeo.necta.go.tz),
+            // and later moved back to onlinesys after 3 to 5 months
+            if ($year == $currentYear) {
+                return "https://matokeo.necta.go.tz/results/{$year}/{$level}/CSEE2023/results/{$school_number}.htm";
+            }
+        } else {
+            // For the years from 2016 up to the current year (or year before the current year for non-acsee levels), results are located at this domain (https://onlinesys.necta.go.tz)
+            if (in_array($year, range(2016, $currentYear - 1))) {
+                return "https://onlinesys.necta.go.tz/results/{$year}/{$level}/results/{$school_number}.htm";
+            }
+            // For the current year (or year before the current year for non-acsee levels), results are initially located at this domain (https://matokeo.necta.go.tz),
+            // and later moved back to onlinesys after 3 to 5 months
+            if ($year == $currentYear) {
+                return "https://matokeo.necta.go.tz/results/{$year}/{$level}/results/{$school_number}.htm";
+            }
         }
     }
 
+
+    private function acseeUrl($year, $school_number) {}
+
+
     private function is_index_number_valid($index_number)
     {
-        // Implementation of is_index_number_valid method
-        # Use regular expressions (REGEX) to verify if the index number follows one of the specified formats:
+        # We use REGEX to verify if the index number follows one of the specified formats:
         # - S0596.0010.2022
         # - S0596/0010/2022
-
         $regex = '/^S\d{4}\.\d{4}\.\d{4}$|^S\d{4}\/\d{4}\/\d{4}$/';
         if (preg_match($regex, $index_number)) {
             return true;
