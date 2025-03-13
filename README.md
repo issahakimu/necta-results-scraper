@@ -28,7 +28,7 @@ require_once('vendor/autoload.php');
 use NectaResultScraper\NectaResultScraper;
 
 // Retrieve O-Level (CSEE) results:
-$result = NectaResultScraper::results('S1832/0036/2024') // only csee candidate is supported;
+$result = NectaResultScraper::results('S1832/0036/2024'); // only csee candidate is supported
 
 // Output the results as JSON:
 echo json_encode($result);
