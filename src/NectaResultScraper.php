@@ -15,43 +15,43 @@ use Throwable;
  */
 class NectaResultScraper
 {
-    public static function results($index_number)
+    public static function results(string $indexNumber)
     {
         $result = new NectaResultScraper();
-        return $result->scrape($index_number);
+        return $result->scrape($indexNumber);
     }
 
-    public function scrape($index_number)
+    public function scrape(string $indexNumber): array
     {
         try {
-            if (!$this->is_index_number_valid($index_number)) {
-                return json_encode(['error' => 'Invalid index number']);
+            if (!$this->isIndexNumberValid($indexNumber)) {
+                return ['error' => 'Invalid index number'];
             } else {
-                if (strpos($index_number, '.') !== false) {
-                    $substrings = explode('.', $index_number);
-                } elseif (strpos($index_number, '/') !== false) {
-                    $substrings = explode('/', $index_number);
+                if (strpos($indexNumber, '.') !== false) {
+                    $substrings = explode('.', $indexNumber);
+                } elseif (strpos($indexNumber, '/') !== false) {
+                    $substrings = explode('/', $indexNumber);
                 }
                 $year = $substrings[2];
-                $school_number = strtolower($substrings[0]);
-                $student_number = $substrings[1];
+                $schoolNumber = strtolower($substrings[0]);
+                $studentNumber = $substrings[1];
 
-                $url = $this->url($year, $school_number);
+                $url = $this->getUrl($year, $schoolNumber);
                 $index = ($year > 2018) ? 2 : 0;
                 $found = false;
                 $result = [];
                 $browser = new HttpBrowser(HttpClient::create(['timeout' => 30]));
                 $crawler = $browser->request('GET', $url);
                 $tables = $crawler->filter("table")->eq($index);
-                $examination_number = $school_number . "/" . $student_number;
+                $examinationNumber = $schoolNumber . "/" . $studentNumber;
 
-                $tables->filter('tr')->each(function ($tr) use ($examination_number, &$found, &$result, $url) {
+                $tables->filter('tr')->each(function ($tr) use ($examinationNumber, &$found, &$result, $url) {
                     $row = [];
                     $tr->filter('td')->each(function ($td) use (&$row) {
                         $row[] = trim($td->text());
                     });
 
-                    if (strtolower($row[0]) == $examination_number) {
+                    if (strtolower($row[0]) == $examinationNumber) {
                         $found = true;
                         $gender = $row[1];
                         $division = $row[3];
@@ -60,13 +60,13 @@ class NectaResultScraper
                         preg_match_all("/([A-Z]+)\s-\s'([A-Z])'/", $subjects, $matches);
                         $subjects = $matches[1];
                         $grades = $matches[2];
-                        $subjects_grades = array_combine($subjects, $grades);
+                        $subjectsGrades = array_combine($subjects, $grades);
                         $result = [
                             'gender' => $gender,
                             'division' => $division,
                             'points' => $points,
                             'subjects' => $subjects,
-                            'subjects_grades' => $subjects_grades,
+                            'subjects_grades' => $subjectsGrades,
                             'source' => $url,
                         ];
                     }
@@ -77,7 +77,7 @@ class NectaResultScraper
                         'error' => 'Result not found',
                         'status' => 404,
                         'source' => $url,
-                        'examination_number' => $examination_number,
+                        'examination_number' => $examinationNumber,
                     ];
                 }
                 return $result;
@@ -87,23 +87,23 @@ class NectaResultScraper
         }
     }
 
-    private function url($year, $school_number)
+    private function getUrl(string $year, string $schoolNumber)
     {
-        $supported_years = ['2015', '2017', '2018', '2019', '2020', '2021', '2022', '2023'];
-        if (in_array($year, $supported_years)) {
-            return "https://onlinesys.necta.go.tz/results/{$year}/csee/results/{$school_number}.htm";
+        $supportedYears = ['2015', '2017', '2018', '2019', '2020', '2021', '2022', '2023'];
+        if (in_array($year, $supportedYears)) {
+            return "https://onlinesys.necta.go.tz/results/{$year}/csee/results/{$schoolNumber}.htm";
         }
         if ($year == 2024) {
-            return "https://matokeo.necta.go.tz/results/{$year}/csee/CSEE2024/CSEE2024/results/{$school_number}.htm";
+            return "https://matokeo.necta.go.tz/results/{$year}/csee/CSEE2024/CSEE2024/results/{$schoolNumber}.htm";
         }
         if ($year == 2016) {
-            return "https://onlinesys.necta.go.tz/results/2016/csee/results/{$school_number}.htm";
+            return "https://onlinesys.necta.go.tz/results/2016/csee/results/{$schoolNumber}.htm";
         }
     }
 
-    private function is_index_number_valid($index_number)
+    private function isIndexNumberValid(string $indexNumber): bool
     {
         $regex = '/^S\d{4}\.\d{4}\.\d{4}$|^S\d{4}\/\d{4}\/\d{4}$/';
-        return preg_match($regex, $index_number);
+        return preg_match($regex, $indexNumber) === 1;
     }
 }

@@ -17,9 +17,7 @@ composer require alexleotz/necta-results-scraper
 
 ## Usage
 
-Use the static `results` method of the `NectaResultScraper` class, passing the student's index number as the first argument.
-
-The second argument specifies the examination level and is optional. It defaults to `csee` (O-Level). Use `acsee` for A-Level results.
+Use the static `results` method of the `NectaResultScraper` class, passing the student's index number as argument.
 
 Example usage:
 
@@ -30,13 +28,7 @@ require_once('vendor/autoload.php');
 use NectaResultScraper\NectaResultScraper;
 
 // Retrieve O-Level (CSEE) results:
-$result = NectaResultScraper::results('S1832/0036/2024'); // Defaults to 'csee'
-
-// Or explicitly specify O-Level:
-$result = NectaResultScraper::results('S1832/0036/2024', 'csee');
-
-// Retrieve A-Level (ACSEE) results:
-$result = NectaResultScraper::results('S0310/0501/2023', 'acsee');
+$result = NectaResultScraper::results('S1832/0036/2024') // only csee candidate is supported;
 
 // Output the results as JSON:
 echo json_encode($result);
@@ -54,27 +46,40 @@ The script returns the student's results in JSON format:
 
 ```json
 {
-  "gender": "F",
-  "division": "IV",
-  "points": "31",
-  "subjects": ["CIV", "HIST", "GEO", "KIISLAMU", "KISW", "ENGL", "BIO", "MATH"],
+  "gender": "M",
+  "division": "II",
+  "points": "19",
+  "subjects": [
+    "CIV",
+    "HIST",
+    "GEO",
+    "KISW",
+    "ENGL",
+    "ENG",
+    "PHY",
+    "CHEM",
+    "BIO",
+    "MATH"
+  ],
   "subjects_grades": {
-    "CIV": "F",
-    "HIST": "D",
-    "GEO": "F",
-    "KIISLAMU": "F",
+    "CIV": "C",
+    "HIST": "B",
+    "GEO": "C",
     "KISW": "C",
-    "ENGL": "F",
-    "BIO": "D",
-    "MATH": "F"
+    "ENGL": "C",
+    "ENG": "C",
+    "PHY": "D",
+    "CHEM": "C",
+    "BIO": "B",
+    "MATH": "C"
   },
-  "source": "https://onlinesys.necta.go.tz/results/2022/csee/results/s0596.htm"
+  "source": "https://matokeo.necta.go.tz/results/2024/csee/CSEE2024/CSEE2024/results/s1832.htm"
 }
 ```
 
 ## Index Number Format
 
-The package supports index numbers in slash-separated (e.g., `S1187/0142/2022`) and dot-separated (e.g., `S1187.0142.2022`) formats. Input validation is handled internally.
+The package supports index numbers in slash-separated (e.g., `S1832/0036/2024`) and dot-separated (e.g., `S1832.0036.2024`) formats. Input validation is handled internally.
 
 ## Supported Years
 
@@ -96,10 +101,6 @@ If you encounter the "Could not find a version" error, ensure your `composer.jso
 ```
 
 Then, run `composer update` again.
-
-## Inspiration
-
-This package is inspired by the [NECTA-API](https://github.com/vincent-laizer/NECTA-API) Python package by [vincent laizer](https://github.com/vincent-laizer).
 
 ## Contributing
 
