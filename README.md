@@ -1,17 +1,27 @@
 # Necta Results Scraper
 
-This package provides a PHP script that allows you to scrape students' results from the National Examinations Council of Tanzania (NECTA) website.
+This package provides a PHP script to scrape student results from the National Examinations Council of Tanzania (NECTA) website.
+
+**Requirements:**
+
+- PHP 7.0 or higher
+- Composer
 
 ## Installation
 
-You can install this package using Composer:
+Install the package using Composer:
 
-`composer require alexleotz/necta-results-scraper`
+```bash
+composer require alexleotz/necta-results-scraper
+```
 
 ## Usage
 
-To use this package, simply call the static result method of the NectaResultScraper class with the student form four index number string as the argument:
-Assuming you have a PHP file named index.php in your parent directory, simply replicate the code provided below:
+Use the static `results` method of the `NectaResultScraper` class, passing the student's index number as the first argument.
+
+The second argument specifies the examination level and is optional. It defaults to `csee` (O-Level). Use `acsee` for A-Level results.
+
+Example usage:
 
 ```php
 <?php
@@ -19,28 +29,31 @@ require_once('vendor/autoload.php');
 
 use NectaResultScraper\NectaResultScraper;
 
-// Pass the index number string and the level as the arguments.
-$result = NectaResultScraper::results('S1187/0142/2022', 'csee');
-// or
-$result = NectaResultScraper::results('S0310/0501/2023', 'acsee');
-// or simply
-$result = NectaResultScraper::results('S1187/0142/2022'); // level is 'csee' by default
+// Retrieve O-Level (CSEE) results:
+$result = NectaResultScraper::results('S1832/0036/2024'); // Defaults to 'csee'
 
-// Output the result.
+// Or explicitly specify O-Level:
+$result = NectaResultScraper::results('S1832/0036/2024', 'csee');
+
+// Retrieve A-Level (ACSEE) results:
+$result = NectaResultScraper::results('S0310/0501/2023', 'acsee');
+
+// Output the results as JSON:
 echo json_encode($result);
 ```
 
-Then run:
+Run the script from your terminal:
 
-```sh
+```bash
 php index.php
 ```
 
 ## Output
 
-The output is student's result when converted to JSON
+The script returns the student's results in JSON format:
 
-```{
+```json
+{
   "gender": "F",
   "division": "IV",
   "points": "31",
@@ -59,40 +72,39 @@ The output is student's result when converted to JSON
 }
 ```
 
-## Validation
+## Index Number Format
 
-The supported examination formats are slash-separated and comma-separated formats, e.g., S1187/0142/2022 or S1187.0142.2022. The package handles validation for you.
+The package supports index numbers in slash-separated (e.g., `S1187/0142/2022`) and dot-separated (e.g., `S1187.0142.2022`) formats. Input validation is handled internally.
 
-## Supported years
+## Supported Years
 
-Currently, we support all years from 2003 up to now.
+This package supports result scraping for years from 2015 to the present.
 
-## Error
+## Error Handling
 
-If the student is not found, 404 status code will be returned. For any other error, a code of 500 will be returned.
+- **Result Not Found:** If the student's results are not found, the script returns a JSON response with an `error` message and a `404` status code.
+- **Other Errors:** For other errors, such as network issues or parsing errors, a JSON response with an `error` message is returned.
 
-If, for any reason, you encounter the following error:
+## Composer Stability
 
-```
-Could not find a version of the package alexleotz/necta-results-scraper matching your minimum-stability (stable). Require it with an explicit version constraint allowing its desired stability.
-```
-
-Create a new composer file (if none exists) and add the following line:
+If you encounter the "Could not find a version" error, ensure your `composer.json` file includes:
 
 ```json
-"minimum-stability": "stable"
+{
+  "minimum-stability": "stable"
+}
 ```
 
-Then, install this package again.
+Then, run `composer update` again.
 
 ## Inspiration
 
-This package was inspired by [NECTA-API](https://github.com/vincent-laizer/NECTA-API) Python package created by [vincent laizer](https://github.com/vincent-laizer)
+This package is inspired by the [NECTA-API](https://github.com/vincent-laizer/NECTA-API) Python package by [vincent laizer](https://github.com/vincent-laizer).
 
 ## Contributing
 
-If you’d like to contribute to this project, please fork the repository and use a feature branch. Pull requests are welcome or call 0748333586 for personal support and chat!
+Contributions are welcome! Fork the repository, create a feature branch, and submit a pull request. For personal support or inquiries, please contact 0748333586.
 
 ## License
 
-This package is released under the MIT license. See LICENSE for details.
+This package is released under the MIT License. See `LICENSE` for details.
