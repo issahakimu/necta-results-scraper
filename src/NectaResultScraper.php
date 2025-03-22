@@ -2,6 +2,8 @@
 
 namespace NectaResultScraper;
 
+require_once 'vendor/autoload.php';
+
 
 use Symfony\Component\BrowserKit\HttpBrowser;
 use Symfony\Component\HttpClient\HttpClient;
@@ -46,14 +48,7 @@ class NectaResultScraper
                 $browser = new HttpBrowser(HttpClient::create(['timeout' => 30]));
                 $crawler = $browser->request('GET', $url);
 
-                $schoolName = '';
-                $schoolName = $crawler->filter('p')->eq(2)->text();
-                $schoolName = trim($schoolName);
-                $schoolNumberForName = strtoupper($schoolNumber);
-                if (strpos($schoolName, $schoolNumberForName) !== false) {
-                    $schoolName = str_replace($schoolNumberForName, '', $schoolName);
-                }
-                $schoolName = trim($schoolName);          
+                $schoolName = $this->getSchoolName($crawler, $schoolNumber);       
 
                 $tables = $crawler->filter("table")->eq($index);
                 $examinationNumber = $schoolNumber . "/" . $studentNumber;
@@ -117,6 +112,22 @@ class NectaResultScraper
             return "https://onlinesys.necta.go.tz/results/2016/csee/results/{$schoolNumber}.htm";
         }
     }
+
+    private function getSchoolName($crawler, $schoolNumber): string
+{
+   
+    $schoolName = $crawler->filter('p')->eq(2)->text();
+    $schoolName = trim($schoolName);
+
+    
+    $schoolNumberForName = strtoupper($schoolNumber);
+    if (strpos($schoolName, $schoolNumberForName) !== false) {
+        $schoolName = str_replace($schoolNumberForName, '', $schoolName);
+    }
+
+    return trim($schoolName);
+}
+
 
     private function isIndexNumberValid(string $indexNumber): bool
     {
