@@ -101,15 +101,9 @@ class NectaResultScraper
 
     private function getUrl(string $year, string $schoolNumber)
     {
-        $supportedYears = ['2015', '2017', '2018', '2019', '2020', '2021', '2022', '2023'];
+        $supportedYears = ['2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024'];
         if (in_array($year, $supportedYears)) {
             return "https://onlinesys.necta.go.tz/results/{$year}/csee/results/{$schoolNumber}.htm";
-        }
-        if ($year == 2024) {
-            return "https://matokeo.necta.go.tz/results/{$year}/csee/CSEE2024/CSEE2024/results/{$schoolNumber}.htm";
-        }
-        if ($year == 2016) {
-            return "https://onlinesys.necta.go.tz/results/2016/csee/results/{$schoolNumber}.htm";
         }
     }
 
