@@ -101,8 +101,11 @@ class NectaResultScraper
 
     private function getUrl(string $year, string $schoolNumber)
     {
-        $supportedYears = ['2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024'];
+        $supportedYears = ['2015', '2016', '2017', '2018', '2019', '2020'];
         if (in_array($year, $supportedYears)) {
+            return "https://maktaba.tetea.org/exam-results/CSEE{$year}/{$schoolNumber}.htm";
+        }
+        if(in_array($year, ['2021', '2022', '2023', '2024'])){
             return "https://onlinesys.necta.go.tz/results/{$year}/csee/results/{$schoolNumber}.htm";
         }
     }
