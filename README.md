@@ -2,6 +2,18 @@
 
 This package provides a PHP script to scrape student results from the National Examinations Council of Tanzania (NECTA) website.
 
+> [!CAUTION]
+> ## Important: Performance & Rate Limiting
+> This package sends an individual request for **every single** index number. For example, checking 100,000 students will trigger 100,000 separate requests to NECTA servers, even if the students are from the same school.
+> 
+> **Risks of high request volume:**
+> * **IP Blocking:** NECTA servers may detect the high traffic and temporarily or permanently ban your IP address.
+> * **Timeouts:** Excessive requests can lead to connection timeouts.
+> * **Data Errors:** Timeouts may cause specific students to show "Result Failed" or "Not Found" errors even if the data exists.
+>
+> To avoid these issues, please use the newer, optimized CLI-based tool:
+> **[Necta-Scraper (Python Smart Version)](https://github.com/issahakimu/necta-scraper)**
+
 **Requirements:**
 
 - PHP 7.0 or higher
